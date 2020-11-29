@@ -13,6 +13,12 @@ jobs:
         create:
           name: ws-linux
           paths: deploy
+    - env: BUILD=ppc64le
+      arch: ppc64le
+      os: linux
+      workspaces:
+        create:
+          name: ws-ppc64le
     - env: BUILD=windows
       workspaces:
         create:
@@ -42,6 +48,7 @@ jobs:
           - ws-linux
           - ws-armv6hf
           - ws-aarch64
+          - ws-ppc64le
           - ws-windows
       script:
         - ls -la ${CASHER_DIR}/ || true

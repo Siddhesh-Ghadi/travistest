@@ -17,8 +17,25 @@ build_linux() {
   ./shellcheck myscript
   for tag in $TAGS
   do
-    cp "shellcheck" "deploy/shellcheck-$tag.linux-x86_64";
+    cp "shellcheck" "deploy/shellcheck-$tag.linux-$(uname -m)";
   done
+}
+
+build_ppc64le() {
+  for i in {1..90}
+  do
+    echo "$(date) Timeout combo breaker $i!"
+    sleep 10
+  done &
+  pid=$?
+  trap 'kill $pid' ERR
+  sudo apt-get update
+  sudo apt-get install -y cabal-install
+  cabal update
+  cabal install --dependencies-only --ghc-options="-optlo-Os"
+  cabal build Paths_ShellCheck || true
+  ghc -optl-static -optl-pthread -isrc -idist/build/autogen --make shellcheck -optc-Wl,--gc-sections -optlo-Os
+  strip --strip-all shellcheck
 }
 
 build_aarch64() {
