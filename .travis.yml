@@ -78,7 +78,7 @@ script:
   - mkdir -p deploy
   - source ./.compile_binaries
   - ./striptests
-  - set -ex; travis_wait 50 build_"$BUILD"; set +x
+  - set -ex; build_"$BUILD"; set +x
   - ./.prepare_deploy
 
 # This is in global context and runs for every stage that doesn't override it.
